@@ -9,33 +9,31 @@ BookMyShow is an Indian online entertainment ticketing platform that serves as a
 ### Core Services & Features:
 
 1. **Movie Ticket Booking**
-   - Browse movies by location, language, genre
-   - Select theaters and showtimes
-   - Choose seats (with visual seat maps)
-   - Book tickets with payment processing
-
+  - Browse movies by location, language, genre
+  - Select theaters and showtimes
+  - Choose seats (with visual seat maps)
+  - Book tickets with payment processing
 2. **Event Ticket Booking**
-   - Concerts and live music events
-   - Sports events (cricket, football, etc.)
-   - Theatre productions and plays
-   - Comedy shows and stand-up events
-   - Cultural events and festivals
-
+  - Concerts and live music events
+  - Sports events (cricket, football, etc.)
+  - Theatre productions and plays
+  - Comedy shows and stand-up events
+  - Cultural events and festivals
 3. **User Features**
-   - User registration and authentication
-   - Personalized recommendations
-   - Booking history and ticket management
-   - Multiple payment options
-   - Gift vouchers and offers
-
+  - User registration and authentication
+  - Personalized recommendations
+  - Booking history and ticket management
+  - Multiple payment options
+  - Gift vouchers and offers
 4. **Business Features**
-   - Theater/venue management
-   - Show scheduling
-   - Real-time seat availability
-   - Revenue management
-   - Analytics and reporting
+  - Theater/venue management
+  - Show scheduling
+  - Real-time seat availability
+  - Revenue management
+  - Analytics and reporting
 
 ### Scale & Reach:
+
 - Operates in **650+ towns and cities** across India
 - Expanded into parts of **Southeast Asia**
 - Handles millions of concurrent users
@@ -44,6 +42,7 @@ BookMyShow is an Indian online entertainment ticketing platform that serves as a
 ## Architecture Exploration
 
 We will explore and replicate the system design of BookMyShow, focusing on:
+
 - System architecture and design patterns
 - Database design and data modeling
 - Scalability and performance optimization
@@ -52,6 +51,21 @@ We will explore and replicate the system design of BookMyShow, focusing on:
 - Payment processing integration
 - Caching strategies
 - Load balancing and distributed systems
+
+## Project Structure
+
+```
+├── docs/
+│   └── architecture/     # Architecture documentation and design docs
+├── research/             # Research notes, articles, and resources
+└── implementation/       # Code implementations and prototypes
+```
+
+## Quick Start
+
+- **Architecture Overview**: See `[docs/architecture/overview.md](docs/architecture/overview.md)` for a comprehensive breakdown of BookMyShow's architecture
+- **Research Notes**: Check `[research/](research/)` for learning resources and findings
+- **Implementation**: Explore `[implementation/](implementation/)` for code examples and prototypes
 
 ---
 
