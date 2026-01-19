@@ -1,0 +1,83 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Movie {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  duration    Int      // in minutes
+  genre       String?
+  posterUrl   String?
+  createdAt   DateTime @default(now())
+  shows       Show[]
+}
+
+model Theater {
+  id      Int      @id @default(autoincrement())
+  name    String
+  location String
+  screens Screen[]
+}
+
+model Screen {
+  id        Int      @id @default(autoincrement())
+  number    Int
+  theaterId Int
+  theater   Theater  @relation(fields: [theaterId], references: [id])
+  seats     Seat[]
+  shows     Show[]
+}
+
+model Seat {
+  id       Int    @id @default(autoincrement())
+  screenId Int
+  screen   Screen @relation(fields: [screenId], references: [id])
+  row      String
+  number   Int
+  type     String // "STANDARD", "PREMIUM", "VIP"
+  priceModifier Float @default(1.0)
+  
+  bookings BookingSeat[]
+
+  @@unique([screenId, row, number])
+}
+
+model Show {
+  id        Int      @id @default(autoincrement())
+  movieId   Int
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  screenId  Int
+  screen    Screen   @relation(fields: [screenId], references: [id])
+  startTime DateTime
+  
+  bookings  Booking[]
+}
+
+model Booking {
+  id        Int           @id @default(autoincrement())
+  showId    Int
+  show      Show          @relation(fields: [showId], references: [id])
+  userId    String        // Using String to allow simple "User-1" simulation IDs
+  status    String        // "PENDING", "CONFIRMED", "FAILED", "CANCELLED"
+  totalAmount Float       @default(0)
+  createdAt DateTime      @default(now())
+  
+  seats     BookingSeat[]
+}
+
+model BookingSeat {
+  id        Int     @id @default(autoincrement())
+  bookingId Int
+  booking   Booking @relation(fields: [bookingId], references: [id])
+  seatId    Int
+  seat      Seat    @relation(fields: [seatId], references: [id])
+
+  @@unique([bookingId, seatId])
+}
