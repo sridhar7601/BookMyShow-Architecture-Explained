@@ -4,11 +4,8 @@ This folder will contain any code implementations, prototypes, or proof-of-conce
 
 ## Potential Implementations
 
-- [ ] Basic seat booking system
-- [ ] Concurrency control mechanisms
-- [ ] Microservices architecture demo
-- [ ] Caching layer implementation
-- [ ] Database design and schema
+- [X] Basic seat booking system
+
 
 ## Getting Started
 
