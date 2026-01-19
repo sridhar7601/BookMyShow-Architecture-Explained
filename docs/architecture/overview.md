@@ -66,3 +66,30 @@ The system employs horizontal scaling by adding more application servers, and da
 - Caching at multiple layers to reduce database load
 
 This architecture ensures BookMyShow can handle millions of concurrent users, prevent double-bookings, and maintain a smooth user experience during high-demand events like blockbuster movie releases.
+
+## High-Level Design (HLD) Diagram
+
+```mermaid
+graph TD
+    Client[User Client (Web/Mobile)]
+    LB[Load Balancer / CDN]
+    
+    subgraph "Application Cluster"
+        API[Back-End API Servers]
+    end
+    
+    subgraph "Data Layer"
+        Redis[(Redis Cache & Locking)]
+        DB[(PostgreSQL Primary)]
+        Replica[(PostgreSQL Replicas)]
+    end
+    
+    Client --> LB
+    LB --> API
+    
+    API -- "Acquire Lock / Cache Hit" --> Redis
+    API -- "Write Booking" --> DB
+    API -- "Read Movies/Shows" --> Replica
+    
+    DB -. "Async Replication" .-> Replica
+```
