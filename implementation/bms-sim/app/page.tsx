@@ -1,10 +1,12 @@
 
 import { PrismaClient } from '@prisma/client'
 import Link from 'next/link'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, Ticket, Shuffle } from "lucide-react"
+import { Clock, Ticket, Shuffle } from "lucide-react"
+
+import { getShowRequests } from '@/app/actions/show-request'
 
 const prisma = new PrismaClient()
 
@@ -27,6 +29,7 @@ async function getMovies() {
 
 export default async function Home() {
   const movies = await getMovies()
+  const requests = await getShowRequests()
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
@@ -57,6 +60,54 @@ export default async function Home() {
         <div className="absolute bottom-10 left-0 w-full text-center">
           <h2 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">Endless Entertainment</h2>
           <p className="text-slate-300 text-lg drop-shadow-md">Movies, Events, Plays, Sports, and more!</p>
+        </div>
+      </div>
+
+      {/* Fan Campaigns Section */}
+      <div className="container mx-auto px-4 mb-16">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-bold text-slate-800">Fan Campaigns (Request a Show)</h3>
+          <Link href="/requests">
+            <Button variant="ghost" className="text-red-500 hover:text-red-600 hover:bg-red-50">See All ›</Button>
+          </Link>
+        </div>
+
+        <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
+          {/* Create New Card */}
+          <Link href="/requests/create" className="shrink-0">
+            <div className="w-[280px] h-[200px] rounded-xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-500 hover:border-red-500 hover:text-red-500 hover:bg-red-50 transition-all cursor-pointer">
+              <Ticket className="w-8 h-8 mb-2" />
+              <span className="font-semibold">Start a Campaign</span>
+            </div>
+          </Link>
+
+          {requests.map(req => {
+            const progress = (req._count.participants / req.minParticipants) * 100
+            return (
+              <Link key={req.id} href={`/requests/${req.id}`} className="shrink-0">
+                <Card className="w-[280px] h-[200px] flex flex-col hover:shadow-lg transition-shadow border-slate-200">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg line-clamp-1">{req.movie.title}</CardTitle>
+                    <p className="text-xs text-slate-500 line-clamp-1">{req.theater.name}</p>
+                  </CardHeader>
+                  <CardContent className="flex-grow flex flex-col justify-end pb-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-xs font-medium text-slate-600">
+                        <span>{req._count.participants} joined</span>
+                        <span>Goal: {req.minParticipants}</span>
+                      </div>
+                      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-red-500 transition-all rounded-full" style={{ width: `${Math.min(100, progress)}%` }}></div>
+                      </div>
+                      <p className="text-xs text-slate-400 text-right">
+                        {new Date(req.date).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            )
+          })}
         </div>
       </div>
 

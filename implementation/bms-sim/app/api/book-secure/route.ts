@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
                 // SET key "locked" NX (Only if Not eXists) EX 600 (Expire in 10 mins)
                 // This is Atomic. Only one request will succeed.
-                const acquired = await redis.set(lockKey, userId, 'NX', 'EX', 600)
+                const acquired = await (redis as any).set(lockKey, userId, 'NX', 'EX', 600)
 
                 if (!acquired) {
                     // Check who holds the lock (for better error messages)

@@ -17,6 +17,7 @@ model Movie {
   posterUrl   String?
   createdAt   DateTime @default(now())
   shows       Show[]
+  showRequests ShowRequest[]
 }
 
 model Theater {
@@ -24,6 +25,7 @@ model Theater {
   name    String
   location String
   screens Screen[]
+  showRequests ShowRequest[]
 }
 
 model Screen {
@@ -80,4 +82,29 @@ model BookingSeat {
   seat      Seat    @relation(fields: [seatId], references: [id])
 
   @@unique([bookingId, seatId])
+}
+
+model ShowRequest {
+  id              Int      @id @default(autoincrement())
+  movieId         Int
+  movie           Movie    @relation(fields: [movieId], references: [id])
+  theaterId       Int
+  theater         Theater  @relation(fields: [theaterId], references: [id])
+  date            DateTime // Date of the requested show
+  startTime       DateTime // Requested start time
+  minParticipants Int      @default(20)
+  status          String   @default("PENDING") // "PENDING", "CONFIRMED", "EXPIRED"
+  createdAt       DateTime @default(now())
+
+  participants    ShowRequestParticipant[]
+}
+
+model ShowRequestParticipant {
+  id        Int         @id @default(autoincrement())
+  requestId Int
+  request   ShowRequest @relation(fields: [requestId], references: [id])
+  userId    String
+  joinedAt  DateTime    @default(now())
+
+  @@unique([requestId, userId])
 }
